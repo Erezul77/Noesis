@@ -1,8 +1,17 @@
+// app/layout.tsx
+export const metadata = {
+  title: "Noesis",
+  description: "A recursive reflection engine",
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className="bg-white text-black">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

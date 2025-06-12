@@ -1,8 +1,8 @@
-export default function HomePage() {
+// app/page.tsx
+export default function Home() {
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>🧠 Welcome to Noēsis</h1>
-      <p>This is your new hub for Physis, SpiñO, and reflections.</p>
-    </div>
+    <main>
+      <h1>Welcome to Noesis</h1>
+    </main>
   );
 }
