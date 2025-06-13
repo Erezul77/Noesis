@@ -1,15 +1,16 @@
-// lib/ipfs.ts
-import * as W3 from '@web3-storage/w3up-client'
+import * as w3 from '@web3-storage/w3up-client'
 import { filesFromPaths } from 'files-from-path'
 
-export const client = await W3.create()
+const spaceDID = process.env.WEB3_STORAGE_SPACE_DID!
+const privateKey = process.env.WEB3_STORAGE_PRIVATE_KEY!
+const email = process.env.WEB3_STORAGE_EMAIL!
 
-await client.login(process.env.WEB3_STORAGE_DID!)
-await client.setCurrentSpace(process.env.WEB3_STORAGE_SPACE_DID!)
+const client = await w3.create()
+await client.login(email)
+await client.setCurrentSpace(spaceDID)
 
-export async function storeReflection(content: string) {
-  const file = new File([content], 'reflection.txt', { type: 'text/plain' })
-  const cid = await client.uploadFile(file)
-  console.log('Stored to IPFS with CID:', cid)
+export async function pinToIPFS(filePath: string): Promise<string> {
+  const files = await filesFromPaths([filePath])
+  const cid = await client.uploadFile(files[0])
   return cid.toString()
 }
