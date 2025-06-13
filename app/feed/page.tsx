@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
 export default function FeedPage() {
-  const [reflections, setReflections] = useState([])
+  const [reflections, setReflections] = useState<{ id: string; [key: string]: any }[]>([]);
 
   useEffect(() => {
     const q = query(collection(db, 'reflections'), orderBy('timestamp', 'desc'))
