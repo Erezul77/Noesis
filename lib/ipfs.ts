@@ -1,16 +1,18 @@
-import { create } from '@web3-storage/w3up-client'
-import { StoreMemory } from '@web3-storage/access/stores/memory'
-import { importDID } from 'w3up-client/utils'
+import { Client } from '@web3-storage/w3up-client'
+import { filesFromPath } from 'files-from-path'
+import path from 'path'
+import fs from 'fs'
 
-const client = await create({ store: new StoreMemory() })
+export const client = new Client()
 
-const DID = process.env.WEB3_STORAGE_DID!
-const SPACE_DID = process.env.WEB3_STORAGE_SPACE_DID!
+await client.login(process.env.WEB3_STORAGE_DID!)
+await client.setCurrentSpace(process.env.WEB3_STORAGE_SPACE_DID!)
 
-await client.setCurrentDID(await importDID(DID))
-await client.setCurrentSpace(SPACE_DID)
+export async function uploadToIPFS(content: string) {
+  const filePath = path.join('/tmp', 'reflection.txt')
+  fs.writeFileSync(filePath, content)
 
-export async function uploadToIPFS(file: File): Promise<string> {
-  const fileCid = await client.uploadFile(file)
-  return `ipfs://${fileCid}`
+  const files = await filesFromPath(filePath)
+  const cid = await client.uploadDirectory(files)
+  return cid.toString()
 }
