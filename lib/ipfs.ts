@@ -1,20 +1,16 @@
+import { create } from '@web3-storage/w3up-client'
+import { StoreMemory } from '@web3-storage/access/stores/memory'
+import { importDID } from 'w3up-client/utils'
 
-import * as w3up from '@web3-storage/w3up-client';
+const client = await create({ store: new StoreMemory() })
 
-let client: any;
+const DID = process.env.WEB3_STORAGE_DID!
+const SPACE_DID = process.env.WEB3_STORAGE_SPACE_DID!
 
-export async function initIPFS() {
-  if (!client) {
-    client = await w3up.create();
-    const space = await client.login(process.env.WEB3_STORAGE_EMAIL!);
-    await client.setCurrentSpace(space.did());
-  }
-  return client;
-}
+await client.setCurrentDID(await importDID(DID))
+await client.setCurrentSpace(SPACE_DID)
 
-export async function uploadToIPFS(content: string): Promise<string> {
-  const client = await initIPFS();
-  const blob = new Blob([content], { type: 'text/plain' });
-  const cid = await client.uploadFile(blob);
-  return `ipfs://${cid}`;
+export async function uploadToIPFS(file: File): Promise<string> {
+  const fileCid = await client.uploadFile(file)
+  return `ipfs://${fileCid}`
 }
