@@ -1,5 +1,5 @@
 // lib/blockchain/pushToChain.ts
-import { JsonRpcProvider } from 'ethers'
+import { JsonRpcProvider } from 'ethers'  // ✔ CORRECT way in ethers v6
 import { Wallet, Contract } from 'ethers'
 import contractABI from './abi/ReflectionVaultABI.json'
 
